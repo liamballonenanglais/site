@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le téléphone de Aryo</title>
+<style>
+  *{box-sizing:border-box;margin:0;font-family:system-ui,sans-serif}
+  body{background:#222;display:flex;justify-content:center;align-items:center;min-height:100vh}
+  #phone{width:390px;height:780px;max-height:100vh;background: #1b2a49 url('media/fond.jpeg') center/cover no-repeat;;
+    border-radius:40px;position:relative;overflow:hidden;color:#fff;box-shadow:0 0 30px #000}
+  .screen{position:absolute;inset:0;padding:60px 20px 20px;display:none}
+  .screen.active{display:block}
+  #lock{text-align:center;cursor:pointer}
+  #clock{font-size:80px;font-weight:300;margin-top:60px}
+  #date{font-size:18px;opacity:.85}
+  .notif{background:rgba(255,255,255,.2);border-radius:16px;padding:14px;margin-top:60px;text-align:left}
+  .hint{position:absolute;bottom:30px;left:0;right:0;font-size:14px;opacity:.7}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:20px}
+  .app{text-align:center;font-size:12px;cursor:pointer;position:relative}
+  .icon{width:62px;height:62px;border-radius:15px;margin:0 auto 6px;display:flex;
+    align-items:center;justify-content:center;font-size:30px;background:rgba(255,255,255,.9)}
+  .badge{position:absolute;top:-6px;right:6px;background:red;border-radius:50%;
+    width:20px;height:20px;font-size:12px;line-height:20px}
+  .page{background:#fff;color:#111;overflow:auto;padding-top:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;
+    margin:0 -20px 16px;padding:50px 16px 10px;background:#f2f2f7;border-bottom:1px solid #ddd;
+    position:sticky;top:0;z-index:2}
+  .topbar button{border:none;background:none;color:#0a84ff;font-size:16px;cursor:pointer;padding:6px}
+  .topbar button:hover{opacity:.6}
+  .page h2{margin-bottom:16px}
+  .msg{padding:10px 14px;border-radius:18px;margin:8px 0;max-width:80%}
+  .in{background:#e5e5ea}
+  .out{background:#0a84ff;color:#fff;margin-left:auto}
+  .note{background:#fff8c6;padding:12px;border-radius:10px;margin-bottom:10px}
+  .contact{padding:12px 0;border-bottom:1px solid #ddd}
+  .contact small{color:#666;display:block}
+  .homebar{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:130px;
+    height:6px;background:#999;border-radius:3px;cursor:pointer;z-index:5;display:none}
+  .homebar.visible{display:block}
+
+  /* Galerie */
+  #gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:0 -20px}
+  .thumb{position:relative;aspect-ratio:1;background:#bbb;cursor:pointer;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;font-size:11px;color:#444;text-align:center}
+  .thumb img,.thumb video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .thumb .play{position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,.65);color:#fff;
+    font-size:11px;padding:2px 6px;border-radius:8px;z-index:1}
+  .thumb span.t{position:relative;padding:4px}
+  #viewer{position:absolute;inset:0;background:#000;z-index:10;display:none;
+    flex-direction:column;align-items:center;justify-content:center}
+  #viewer.open{display:flex}
+  #viewer .media{width:100%;flex:1;display:flex;align-items:center;justify-content:center;min-height:0}
+  #viewer img,#viewer video{max-width:100%;max-height:100%}
+  #viewer .caption{padding:12px;font-size:14px;color:#ddd;text-align:center}
+  #viewer .vbtn{position:absolute;background:rgba(255,255,255,.2);color:#fff;border:none;
+    font-size:22px;border-radius:50%;width:42px;height:42px;cursor:pointer}
+  #viewer .vbtn:hover{background:rgba(255,255,255,.4)}
+  #vclose{top:50px;right:16px}
+  #vprev{left:8px;top:50%}
+  #vnext{right:8px;top:50%}
+</style>
+</head>
+<body>
+<div id="phone">
+
+  <div id="lock" class="screen active">
+    <div id="clock">17:24</div>
+    <div id="date"></div>
+    <div class="notif"><b>Message</b><br>Tu as trouvé le téléphone de Aryo…</div>
+    <div class="hint">Touche l'écran pour déverrouiller</div>
+  </div>
+
+  <div id="home" class="screen">
+    <div class="grid">
+      <div class="app" data-open="gallery"><div class="icon">🖼️</div>Galerie</div>
+      <div class="app" data-open="messages"><div class="icon">💬</div>Messages<span class="badge">67</span></div>
+      <div class="app" data-open="notes"><div class="icon">📝</div>Notes</div>
+      <div class="app" data-open="contacts"><div class="icon">👤</div>Contacts</div>
+    </div>
+  </div>
+
+  <div id="gallery" class="screen page">
+    <div class="topbar"><button data-back>‹ Retour</button><button data-open="home">🏠 Accueil</button></div>
+    <h2>Galerie</h2>
+    <div id="gallery-grid"></div>
+  </div>
+
+  <div id="messages" class="screen page">
+    <div class="topbar"><button data-back>‹ Retour (67) </button><button data-open="home">🏠 Accueil</button></div>
+    <h2>Messages</h2>
+    <div class="msg in">Tu six seven en bien ?</div>
+    <div class="msg out">Oui, mais je bloque sur quoicoubeh.</div>
+    <div class="msg in">Regarde mes notes et ma galerie, c'est là.</div>
+    <p style="margin-top:16px">
+      <button data-open="notes" style="color:#0a84ff;border:none;background:none;cursor:pointer;font-size:15px">Ouvrir les Notes →</button><br>
+      <button data-open="gallery" style="color:#0a84ff;border:none;background:none;cursor:pointer;font-size:15px">Ouvrir la Galerie →</button>
+    </p>
+  </div>
+
+  <div id="notes" class="screen page">
+    <div class="topbar"><button data-back>‹ Retour</button><button data-open="home">🏠 Accueil</button></div>
+    <h2>Notes</h2>
+    <div class="note"><b>Comment apprendre à conduire</b><br>Embrayage, première, embrayage, embrayage deuxieme...</div>
+    <div class="note"><b>Recette gel douche maison</b><br>Etape 1 sortir du bureau</div>
+  </div>
+
+  <div id="contacts" class="screen page">
+    <div class="topbar"><button data-back>‹ Retour</button><button data-open="home">🏠 Accueil</button></div>
+    <h2>Contacts</h2>
+    <div class="contact">Quoicoubebou<small>Liam ma vie</small></div>
+    <div class="contact">Anastasia Alexan<small>l'autre...</small></div>
+  </div>
+
+  <div id="viewer">
+    <button class="vbtn" id="vclose" aria-label="Fermer">✕</button>
+    <button class="vbtn" id="vprev" aria-label="Précédent">‹</button>
+    <button class="vbtn" id="vnext" aria-label="Suivant">›</button>
+    <div class="media" id="vmedia"></div>
+    <div class="caption" id="vcaption"></div>
+  </div>
+
+  <div id="homebar" class="homebar" data-open="home" title="Accueil"></div>
+</div>
+
+<script>
+  // Modifie cette liste : type = 'photo' ou 'video'
+  const GALLERY = [
+    {type:'photo', src:'media/photo1.jpg', title:'Photo 1 – légende'},
+    {type:'photo', src:'media/photo2.jpeg', title:'Photo 2 – légende'},
+    {type:'video', src:'media/video1.mov', title:'Vidéo 1 – légende'},
+    {type:'photo', src:'media/photo3.jpeg', title:'Photo 3 – légende'},
+    {type:'video', src:'media/video2.mov', title:'Vidéo 2 – légende'}
+  ];
+
+  let navStack = ['lock'];
+  let current = 0;
+
+  function closeViewer(){
+    document.getElementById('viewer').classList.remove('open');
+    document.getElementById('vmedia').innerHTML = '';
+  }
+  function render(id){
+    closeViewer();
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('homebar').classList.toggle('visible', id!=='lock' && id!=='home');
+  }
+  function go(id){
+    if(navStack[navStack.length-1]===id) return;
+    if(id==='home') navStack = ['lock','home'];
+    else navStack.push(id);
+    render(id);
+  }
+  function back(){
+    if(document.getElementById('viewer').classList.contains('open')){ closeViewer(); return; }
+    if(navStack.length>1) navStack.pop();
+    render(navStack[navStack.length-1]);
+  }
+
+  // Galerie
+  const grid = document.getElementById('gallery-grid');
+  GALLERY.forEach((item,i)=>{
+    const t = document.createElement('div');
+    t.className = 'thumb';
+    const label = document.createElement('span');
+    label.className = 't';
+    label.textContent = item.title;
+    t.appendChild(label);
+    let el;
+    if(item.type==='video'){
+      el = document.createElement('video');
+      el.src = item.src + '#t=0.5';
+      el.preload = 'metadata';
+      el.muted = true;
+      const p = document.createElement('div');
+      p.className = 'play'; p.textContent = '▶ Vidéo';
+      t.appendChild(p);
+    } else {
+      el = document.createElement('img');
+      el.src = item.src;
+      el.alt = item.title;
+    }
+    el.addEventListener('error',()=>el.remove());
+    el.addEventListener('load',()=>label.style.display='none');
+    el.addEventListener('loadeddata',()=>label.style.display='none');
+    t.insertBefore(el,label);
+    t.addEventListener('click',()=>openViewer(i));
+    grid.appendChild(t);
+  });
+
+  function openViewer(i){
+    current = (i + GALLERY.length) % GALLERY.length;
+    const item = GALLERY[current];
+    const box = document.getElementById('vmedia');
+    box.innerHTML = '';
+    let el;
+    if(item.type==='video'){
+      el = document.createElement('video');
+      el.controls = true;
+      el.autoplay = true;
+      el.playsInline = true;
+    } else {
+      el = document.createElement('img');
+    }
+    el.src = item.src;
+    el.alt = item.title;
+    el.addEventListener('error',()=>{
+      box.innerHTML = '<p style="color:#aaa;padding:20px;text-align:center">Fichier introuvable :<br>'+item.src+'</p>';
+    });
+    box.appendChild(el);
+    document.getElementById('vcaption').textContent = item.title + '  (' + (current+1) + '/' + GALLERY.length + ')';
+    document.getElementById('viewer').classList.add('open');
+  }
+  document.getElementById('vclose').addEventListener('click',closeViewer);
+  document.getElementById('vprev').addEventListener('click',()=>openViewer(current-1));
+  document.getElementById('vnext').addEventListener('click',()=>openViewer(current+1));
+  document.addEventListener('keydown',e=>{
+    if(!document.getElementById('viewer').classList.contains('open')) return;
+    if(e.key==='Escape') closeViewer();
+    if(e.key==='ArrowLeft') openViewer(current-1);
+    if(e.key==='ArrowRight') openViewer(current+1);
+  });
+
+  // Navigation
+  document.getElementById('lock').addEventListener('click',()=>go('home'));
+  document.addEventListener('click',e=>{
+    const o = e.target.closest('[data-open]');
+    if(o){ go(o.dataset.open); return; }
+    if(e.target.closest('[data-back]')) back();
+  });
+
+  function tick(){
+    const d = new Date();
+    document.getElementById('clock').textContent =
+      d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('date').textContent =
+      d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  }
+  tick(); setInterval(tick,1000);
+</script>
+</body>
+</html>
