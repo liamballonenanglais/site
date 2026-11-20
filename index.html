@@ -86,17 +86,38 @@
     <div id="gallery-grid"></div>
   </div>
 
-  <div id="messages" class="screen page">
-    <div class="topbar"><button data-back>‹ Retour (67) </button><button data-open="home">🏠 Accueil</button></div>
-    <h2>Messages</h2>
-    <div class="msg in">Tu six seven en bien ?</div>
-    <div class="msg out">Oui, mais je bloque sur quoicoubeh.</div>
-    <div class="msg in">Regarde mes notes et ma galerie, c'est là.</div>
-    <p style="margin-top:16px">
-      <button data-open="notes" style="color:#0a84ff;border:none;background:none;cursor:pointer;font-size:15px">Ouvrir les Notes →</button><br>
-      <button data-open="gallery" style="color:#0a84ff;border:none;background:none;cursor:pointer;font-size:15px">Ouvrir la Galerie →</button>
-    </p>
+ <div id="messages" class="screen page">
+  <div class="topbar"><button data-back>‹ Retour</button></div>
+  <h2>Messages</h2>
+
+  <div class="conv" data-open="conv1">
+    <div class="avatar">M</div>
+    <div class="info"><b>Maxime</b><small>Regarde mes notes, c'est là.</small></div>
+    <div class="meta">17:20<br><span class="dot"></span></div>
   </div>
+
+  <div class="conv" data-open="conv2">
+    <div class="avatar" style="background:#ff7e5f">C</div>
+    <div class="info"><b>Camille</b><small>Tu as vu la vidéo dans la galerie ?</small></div>
+    <div class="meta">Hier</div>
+  </div>
+</div>
+
+<div id="conv1" class="screen page">
+  <div class="topbar"><button data-back>‹ Messages</button></div>
+  <div class="chat-title">Maxime</div>
+  <div class="msg in">Tu as relu le chapitre 3 ?</div>
+  <div class="msg out">Oui, mais je bloque sur la définition clé.</div>
+  <div class="msg in">Regarde mes notes, c'est là.</div>
+</div>
+
+<div id="conv2" class="screen page">
+  <div class="topbar"><button data-back>‹ Messages</button></div>
+  <div class="chat-title">Camille</div>
+  <div class="msg in">Tu as vu la vidéo dans la galerie ?</div>
+  <div class="msg out">Pas encore, je regarde ça ce soir.</div>
+  <div class="msg in">Fais attention au deuxième indice.</div>
+</div>
 
   <div id="notes" class="screen page">
     <div class="topbar"><button data-back>‹ Retour</button><button data-open="home">🏠 Accueil</button></div>
