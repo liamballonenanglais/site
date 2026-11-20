@@ -309,6 +309,18 @@
       d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
   }
   tick(); setInterval(tick,1000);
+ document.addEventListener('click', e => {
+  const conv = e.target.closest('.conv');
+  if (!conv) return;
+  const dot = conv.querySelector('.dot');
+  if (dot) dot.remove();
+  const left = document.querySelectorAll('.conv .dot').length;
+  const badge = document.querySelector('[data-open="messages"] .badge');
+  if (badge) {
+    if (left > 0) badge.textContent = left;
+    else badge.remove();
+  }
+});
 </script>
 </body>
 </html>
