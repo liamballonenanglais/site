@@ -48,6 +48,14 @@
 .conv .meta{font-size:12px;color:#888;text-align:right}
 .conv .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#0a84ff;margin-top:4px}
 .chat-title{text-align:center;font-weight:600;margin-bottom:12px}
+ .note-item{padding:12px 0;border-bottom:1px solid #ddd;cursor:pointer}
+.note-item:hover{background:#f5f5f5}
+.note-item b{display:block}
+.note-item small{color:#666;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.note-item .date{float:right;font-size:12px;color:#888}
+.note-body{line-height:1.5;white-space:pre-line}
+.note-title{font-size:22px;font-weight:600;margin-bottom:4px}
+.note-date{font-size:12px;color:#888;margin-bottom:16px}
 
   /* Galerie */
   #gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:0 -20px}
@@ -108,7 +116,7 @@
 
   <div class="conv" data-open="conv2">
     <div class="avatar" style="background:#ff7e5f">C</div>
-    <div class="info"><b>Camille</b><small>Tu as vu la vidéo dans la galerie ?</small></div>
+    <div class="info"><b>Professeur Moreau</b><small>La réponse se trouve autour de toi...</small></div>
     <div class="meta">Hier</div>
   </div>
 </div>
@@ -123,18 +131,47 @@
 
 <div id="conv2" class="screen page">
   <div class="topbar"><button data-back>‹ Messages</button></div>
-  <div class="chat-title">Camille</div>
+  <div class="chat-title">Professeur Moreau </div>
   <div class="msg in">Tu as vu la vidéo dans la galerie ?</div>
   <div class="msg out">Pas encore, je regarde ça ce soir.</div>
   <div class="msg in">Fais attention au deuxième indice.</div>
 </div>
 
   <div id="notes" class="screen page">
-    <div class="topbar"><button data-back>‹ Retour</button><button data-open="home">🏠 Accueil</button></div>
-    <h2>Notes</h2>
-    <div class="note"><b>Comment apprendre à conduire</b><br>Embrayage, première, embrayage, embrayage deuxieme...</div>
-    <div class="note"><b>Recette gel douche maison</b><br>Etape 1 sortir du bureau</div>
+  <div class="topbar"><button data-back>‹ Retour</button></div>
+  <h2>Notes</h2>
+
+  <div class="note-item" data-open="note1">
+    <span class="date">Hier</span>
+    <b>Définition clé</b>
+    <small>Écris ici une définition de ton cours.</small>
   </div>
+
+  <div class="note-item" data-open="note2">
+    <span class="date">Lundi</span>
+    <b>À retenir</b>
+    <small>Écris ici un indice ou une idée importante.</small>
+  </div>
+</div>
+
+<div id="note1" class="screen page">
+  <div class="topbar"><button data-back>‹ Notes</button></div>
+  <div class="note-title">Définition clé</div>
+  <div class="note-date">3 novembre 2026</div>
+  <div class="note-body">Écris ici une définition de ton cours.
+
+Tu peux ajouter plusieurs paragraphes, les sauts de ligne sont conservés.</div>
+</div>
+
+<div id="note2" class="screen page">
+  <div class="topbar"><button data-back>‹ Notes</button></div>
+  <div class="note-title">À retenir</div>
+  <div class="note-date">2 novembre 2026</div>
+  <div class="note-body">Écris ici un indice ou une idée importante.
+
+- Point 1
+- Point 2</div>
+</div>
 
   <div id="contacts" class="screen page">
     <div class="topbar"><button data-back>‹ Retour</button><button data-open="home">🏠 Accueil</button></div>
